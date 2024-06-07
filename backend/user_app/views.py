@@ -45,7 +45,7 @@ class userApi(APIView):
     permission_classes = [IsAuthenticated]
     def post(self, request):
         try:
-            import pdb;pdb.set_trace()
+            # import pdb;pdb.set_trace()
             with transaction.atomic():
                 user_serializer = UserSerializer(data=request.data)
                 
@@ -80,14 +80,12 @@ class userApi(APIView):
             return Response({'detail': str(e)}, status=status.HTTP_400_BAD_REQUEST)
         
     def delete(self, request):
-        import pdb;pdb.set_trace()
         id = request.data
         User.objects.filter(id = id).delete()
         return Response(status = status.HTTP_200_OK)
         
     def put(self, request):
         try:
-            import pdb;pdb.set_trace()
             user_id = request.data.get('id')
             user_instance = User.objects.get(id=user_id)
             
