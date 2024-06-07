@@ -38,7 +38,7 @@ const UserList = () => {
         // navigate('/');
       } else {
         console.error('Error:', response.statusText);
-        if(res.status == 401) {
+        if(response.status == 401) {
           navigate('/login');
         }
       }
@@ -78,31 +78,60 @@ const UserList = () => {
     };
     fetchUsers();
   }, []);
+  
+  const userLogOut = async (e) => {
+    // e.preventDefault();
+    console.log(e)
+
+    try {
+      const response = await fetch('http://127.0.0.1:8000/user/logout');
+      if (response.ok) {
+        localStorage.clear()
+        navigate('/login');
+      } else {
+        console.error('Error:', response.statusText);
+        if(response.status == 401) {
+          navigate('/login');
+        }
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
   const myFunction = () => {
-    var input, filter, table, tr, td, i, txtValue;
+    var input, filter, table, tr, td, i, j, txtValue, shouldDisplay;
     input = document.getElementById("myInput");
     filter = input.value.toUpperCase();
     table = document.getElementById("myTable");
     tr = table.getElementsByTagName("tr");
+
     for (i = 0; i < tr.length; i++) {
-      console.log(tr[i]);
-      td = tr[i].getElementsByTagName("td");
-      for (let j = 0; j < tr.length; j++) {
-        if (td[j]) {
-          txtValue = td[j].textContent || td[j].innerText;
-          if (txtValue.toUpperCase().indexOf(filter) > -1) {
-            tr[i].style.display = "";
-          } else {
-            tr[i].style.display = "none";
-          }
+        td = tr[i].getElementsByTagName("td");
+        shouldDisplay = false;
+
+        for (j = 0; j < td.length; j++) {
+            if (td[j]) {
+                txtValue = td[j].textContent || td[j].innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    shouldDisplay = true;
+                    break;
+                }
+            }
         }
-      }
+        tr[i].style.display = shouldDisplay ? "" : "none";
     }
-  }
+}
+
   
   return (
     <div className="card p-4 m-4">
       <h2>User List
+        <button className="btn btn-primary rounded-circle p-2 lh-1 create-btn cursor-pointer btn-danger mx-1" title='Logout' onClick={userLogOut}>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-power" viewBox="0 0 16 16">
+            <path d="M7.5 1v7h1V1z"/>
+            <path d="M3 8.812a5 5 0 0 1 2.578-4.375l-.485-.874A6 6 0 1 0 11 3.616l-.501.865A5 5 0 1 1 3 8.812"/>
+          </svg>
+        </button>
         <button className="btn btn-primary rounded-circle p-2 lh-1 create-btn cursor-pointer" title='Create User' onClick={handleCreateClick}>
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-person-plus" viewBox="0 0 16 16">
             <path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H1s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C9.516 10.68 8.289 10 6 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/>

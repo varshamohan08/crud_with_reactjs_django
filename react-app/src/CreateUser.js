@@ -101,7 +101,8 @@ const CreateUser = () => {
             required
           />
         </div>
-        <div className="mb-3">
+        {!blnEdit ? (
+          <div className="mb-3">
           <label htmlFor="password" className="form-label">Password</label>
           <input
             type="password"
@@ -113,6 +114,10 @@ const CreateUser = () => {
             required
           />
         </div>
+        ) : (
+          <div></div>
+        )}
+        
         {blnEdit ? (
           <button type="submit" className="btn btn-primary">Update</button>
         ) : (
