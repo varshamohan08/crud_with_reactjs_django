@@ -6,6 +6,8 @@ import CreateUser from './CreateUser';
 import LoginUser from './login';
 import { useAuth } from './auth';
 import PrivateRoute from './PrivateRoute';
+import TodoList from './TodoList';
+import CreateTodo from './CreateTodo';
 
 // function PrivateRoute({ element: Component, ...rest }) {
 //   let auth = useAuth();
@@ -16,8 +18,10 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<UserList />} />
-        <Route path="/create" element={<PrivateRoute element={<CreateUser />} />} />
+        <Route path="/users" element={<UserList />} />
+        <Route path="/" element={<PrivateRoute element={<TodoList />} />} />
+        <Route path="/createtodo" element={<PrivateRoute element={<CreateTodo />} />} />
+        <Route path="/createuser" element={<PrivateRoute element={<CreateUser />} />} />
         <Route path="/login" element={<LoginUser />} />
       </Routes>
     </BrowserRouter>
